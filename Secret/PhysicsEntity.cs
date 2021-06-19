@@ -21,8 +21,8 @@ namespace Secret
             AddComponent<Dynamo>();
             AddComponent<Material>();
             AddComponent<Body>();
-            Get<Material>().Restitution = Calc.Random(0.1f, 0.9f);
-            Get<Material>().Density = Calc.Random(0.05f, 0.2f);
+            //Get<Material>().Restitution = Calc.Random(0.1f, 0.9f);
+            //Get<Material>().Density = Calc.Random(0.05f, 0.2f);
         }
         public void SetShape(Shape SHAPE) {
             Get<Collider>().MoldShape(SHAPE);

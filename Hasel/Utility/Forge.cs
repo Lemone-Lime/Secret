@@ -72,7 +72,6 @@ namespace Hasel
                     list.Add(new Component());
                 }
             }
-            
         }
         public void EntityRemove(Entity ENTITY)
         {
@@ -134,13 +133,6 @@ namespace Hasel
                 if (entity.Mask.FullCheck(MASK.Value)) temp.Add(entity);
             }
             return temp;
-        }
-        public void UpdateSoftReq(Entity ENTITY)
-        {
-            foreach (var component in GetComponentsByEntity(ENTITY))
-            {
-                component.SoftReq(ENTITY);
-            }
         }
         public T Get<T>(Entity ENTITY) where T : Component
         {

@@ -32,10 +32,6 @@ namespace Hasel
         }
         internal virtual void Prereq(Entity ENTITY)
         {
-            SoftReq(ENTITY);
-        }
-        internal virtual void SoftReq(Entity ENTITY)
-        {
 
         }
     }

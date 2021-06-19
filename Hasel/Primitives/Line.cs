@@ -20,9 +20,5 @@ namespace Hasel
             Color = COLOR ?? Color.White;
             Thickness = THICKNESS;
         }
-        public void Set()
-        {
-
-        }
     }
 }

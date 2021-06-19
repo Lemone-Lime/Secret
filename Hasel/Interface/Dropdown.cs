@@ -20,10 +20,12 @@ namespace Hasel
     {
         public List<HInterface> Items;
         public bool Open;
+        public Vector2 InitialDropOffset;
 
-        public Dropdown(Vector2? POSITION = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null) : base(POSITION, DIMENSIONS, TEXTURE, TEXT, null)
+        public Dropdown(Vector2? POSITION = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? INITIALDROPOFFSET = null) : base(POSITION, DIMENSIONS, TEXTURE, TEXT, null)
         {
             Items = new List<HInterface>();
+            InitialDropOffset = INITIALDROPOFFSET ?? new Vector2(0, Dimensions.Y);
         }
 
         public override void Update()
@@ -32,23 +34,28 @@ namespace Hasel
 
             base.Update();
 
-            var height = Dimensions.Y;
+            Vector2 DropOffsetTarget = InitialDropOffset;
             if (Open)
             {
                 foreach (var item in Items)
                 {
-                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, height, height / 100);
+                    item.DropOffset.X = InitialDropOffset.X;
+                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, DropOffsetTarget.Y, DropOffsetTarget.Y / 100);
 
-                    height += item.Dimensions.Y;
+                    item.Visible = true;
+
+                    DropOffsetTarget.Y += item.Dimensions.Y;
                 }
             }
             else
             {
                 foreach (var item in Items)
                 {
-                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, 0, height / 100);
+                    item.DropOffset.X = InitialDropOffset.X;
+                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, 0, DropOffsetTarget.Y / 100);
+                    if (item.DropOffset.Y == 0) item.Visible = false;
 
-                    height += item.Dimensions.Y;
+                    DropOffsetTarget.Y += item.Dimensions.Y;
                 }
             }
         }
@@ -61,8 +68,6 @@ namespace Hasel
         public override void Activate()
         {
             Open = !Open;
-
-            foreach (var item in Items) item.Visible = Open;
         }
         public void Add(HInterface ITEM)
         {

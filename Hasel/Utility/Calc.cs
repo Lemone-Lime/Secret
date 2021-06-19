@@ -46,6 +46,10 @@ namespace Hasel
         {
             return (VECTORB.X - VECTORA.X) * (VECTORB.X - VECTORA.X) + (VECTORB.Y - VECTORA.Y) * (VECTORB.Y - VECTORA.Y);
         }
+        public static float Lerp(float FIRST, float SECOND, float BY)
+        {
+            return FIRST * (1 - BY) + SECOND * BY;
+        }
         public static Vector2 Perpendicular(this Vector2 VECTOR)
         {
             return new Vector2(-VECTOR.Y, VECTOR.X);

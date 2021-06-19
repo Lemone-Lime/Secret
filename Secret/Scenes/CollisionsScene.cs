@@ -27,8 +27,9 @@ namespace Secret
         Entity Platform;
         HInterface Bar;
         Dropdown Edit;
-        Button Exit, GameSettings;
+        Button Exit;
         Checkbox PlaceBox, PlaceCircle;
+        Slider Density, Restitution;
 
         int size = 30;
 
@@ -56,12 +57,23 @@ namespace Secret
             PlaceCircle.Visible = false;
             Edit.Add(PlaceCircle);
 
-            GameSettings = new Button(Vector2.Zero, null, new HTexture(160, 24, new Color(10, 10, 10, 1)), new HText("Hack", "Game Settings", new Vector2(10, 5)));
-            GameSettings.HighlightTarget = 0.03f;
-            GameSettings.TextLeanTarget = new Vector2(7, 0);
-            GameSettings.Visible = false;
-            Edit.Add(GameSettings);
+            Density = new Slider(Vector2.Zero, null, new HTexture(160, 32, new Color(10, 10, 10, 1)), new HText("Hack", "Density", new Vector2(10, 5)), new Vector2(30, 26), 100, 3);
+            Density.LineColor = Color.White;
+            Density.HighlightTarget = 0.03f;
+            Density.TextLeanTarget = new Vector2(7, 0);
+            Density.Visible = false;
+            Density.CircleRadius = 3;
+            Density.CircleThickness = 5;
+            Edit.Add(Density);
 
+            Restitution = new Slider(Vector2.Zero, null, new HTexture(160, 32, new Color(10, 10, 10, 1)), new HText("Hack", "Restitution", new Vector2(10, 5)), new Vector2(30, 26), 100, 3);
+            Restitution.LineColor = Color.White;
+            Restitution.HighlightTarget = 0.03f;
+            Restitution.TextLeanTarget = new Vector2(7, 0);
+            Restitution.Visible = false;
+            Restitution.CircleRadius = 3;
+            Restitution.CircleThickness = 5;
+            Edit.Add(Restitution);
 
             player = new PhysicsEntity();
             player.Added(this);
@@ -71,6 +83,7 @@ namespace Secret
             Platform.AddComponent<Transform>();
             Platform.AddComponent<Collider>();
             Platform.AddComponent<Material>();
+            Platform.Get<Material>().Restitution = 1;
             Platform.Get<Collider>().MoldShape(new Box(new Vector2(0, 500), new Vector2(1024, 40)));
             Platform.AddTag("Ground");
         }
@@ -98,6 +111,8 @@ namespace Secret
             if (Scoop.Keyboard.Pressed(Keys.Z)) player.Get<Transform>().Position = Scoop.Mouse.Position;
 
             size = Math.Clamp(size + Math.Sign(Scoop.Mouse.WheelDelta), 10, 100);
+
+            Debug.WriteLine(Density.Value);
 
         }
         public override void FixedUpdate()
@@ -137,6 +152,9 @@ namespace Secret
             PhysicsEntity physicsEntity = new PhysicsEntity();
             physicsEntity.Added(this);
             physicsEntity.Get<Transform>().Position = Scoop.Mouse.Position;
+            physicsEntity.Get<Material>().Restitution = Calc.Lerp(0.1f, 0.9f, Restitution.Value);
+            physicsEntity.Get<Material>().Density = Calc.Lerp(0.01f, 0.4f, Density.Value);
+
             physicsEntity.SetShape(SHAPE);
         }
     }
