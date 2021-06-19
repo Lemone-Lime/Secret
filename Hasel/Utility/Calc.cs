@@ -22,6 +22,10 @@ namespace Hasel
         {
             return VALUE > TARGET ? Math.Max(VALUE - INTERVAL, TARGET) : Math.Min(VALUE + INTERVAL, TARGET);
         }
+        public static Vector2 Approach(Vector2 VALUE, Vector2 TARGET, Vector2 INTERVAL)
+        {
+            return new Vector2(Approach(VALUE.X, TARGET.X, INTERVAL.X), Approach(VALUE.Y, TARGET.Y, INTERVAL.Y));
+        }
         public static Vector2 AngleToVector(float RADIANS, float LENGTH)
         {
             return new Vector2((float)Math.Cos(RADIANS) * LENGTH, (float)Math.Sin(RADIANS) * LENGTH);
@@ -37,6 +41,10 @@ namespace Hasel
         public static Vector2 CrossProduct(this float SCALAR, Vector2 VECTOR)
         {
             return new Vector2(-SCALAR * VECTOR.Y, SCALAR * VECTOR.X);
+        }
+        public static float DistanceSquared(this Vector2 VECTORA, Vector2 VECTORB)
+        {
+            return (VECTORB.X - VECTORA.X) * (VECTORB.X - VECTORA.X) + (VECTORB.Y - VECTORA.Y) * (VECTORB.Y - VECTORA.Y);
         }
         public static Vector2 Perpendicular(this Vector2 VECTOR)
         {

@@ -22,15 +22,19 @@ namespace Hasel
         public static BlendState BlendState;
         public static SamplerState SamplerState;
 
-        public static PTexture Pixel;
+        public static HTexture Pixel;
         public static Rectangle Rect;
+        public static SpriteFont Hack;
+        public static HTexture Arrow;
 
         public static void Initialise()
         {
             BlendState = BlendState.AlphaBlend;
             SamplerState = SamplerState.PointClamp;
+            Hack = Globals.Content.Load<SpriteFont>("Hack");
+            Arrow = new HTexture("Arrow", null);
 
-            Pixel = new PTexture(1, 1, Color.White);
+            Pixel = new HTexture(1, 1, Color.White);
         }
         public static void Begin()
         {
@@ -41,9 +45,13 @@ namespace Hasel
             Globals.Batch.End();
         }
         #region Render
-        public static void Render(PTexture TEXTURE, Vector2 POSITION, Color COLOR, float ROTATION, Vector2 SCALE)
+        public static void Render(HTexture TEXTURE, Vector2 POSITION, Color COLOR, float ROTATION, Vector2 SCALE)
         {
-            Globals.Batch.Draw(TEXTURE.Texture, POSITION, TEXTURE.Source, COLOR, ROTATION, TEXTURE.Origin, SCALE, SpriteEffects.None, 0);
+            Globals.Batch.Draw(TEXTURE.Texture, POSITION, TEXTURE.Source, COLOR, ROTATION, Vector2.Zero, SCALE, SpriteEffects.None, 0);
+        }
+        public static void RenderCentered(HTexture TEXTURE, Vector2 POSITION, Color COLOR, float ROTATION, Vector2 SCALE)
+        {
+            Globals.Batch.Draw(TEXTURE.Texture, POSITION, TEXTURE.Source, COLOR, ROTATION, new Vector2(TEXTURE.Texture.Width, TEXTURE.Texture.Height) * 0.5f, SCALE, SpriteEffects.None, 0);
         }
 
         public static void Render(Image IMAGE)
@@ -81,6 +89,11 @@ namespace Hasel
                     Polygon((Polygon)COLLIDER.Shape, COLOR);
                     break;
             }
+        }
+        public static void Render(HText TEXT, Vector2 POSITION)
+        {
+            if (TEXT.Text != "")
+                Globals.Batch.DrawString(TEXT.Font, TEXT.Text, POSITION + TEXT.Offset, TEXT.Color, 0.0f, Vector2.Zero, TEXT.Scale, new SpriteEffects(), 0.0f);
         }
         #endregion
         #region Point
@@ -227,6 +240,15 @@ namespace Hasel
             Polygon(POLYGON.Vertices, COLOR);
         }
         #endregion
-
+        #region Text
+        public static void Text(string TEXT, Vector2 POSITION, Color COLOR, float SCALE)
+        {
+            Globals.Batch.DrawString(Hack, TEXT, POSITION, COLOR, 0.0f, Vector2.Zero, SCALE, new SpriteEffects(), 0.0f);
+        }
+        public static void TextCentered(string TEXT, Vector2 POSITION, Color COLOR, float SCALE)
+        {
+            Globals.Batch.DrawString(Hack, TEXT, POSITION-Hack.MeasureString(TEXT)*0.5f, COLOR, 0.0f, Vector2.Zero, SCALE, new SpriteEffects(), 0.0f);
+        }
+        #endregion
     }
 }

@@ -14,6 +14,8 @@
     <AssemblyName>Hasel</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\Arrow.xnb" />
+    <None Remove="Content\Hack.xnb" />
     <None Remove="Content\Missing.xnb" />
   </ItemGroup>
   <ItemGroup>
@@ -25,6 +27,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Hack.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Missing.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -42,5 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Editor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Arrow.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

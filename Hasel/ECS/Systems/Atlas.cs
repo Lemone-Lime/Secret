@@ -121,7 +121,7 @@ namespace Hasel
         {
             float radius = A.Radius + B.Radius;
             radius *= radius;
-            return radius < Vector2.DistanceSquared(A.Position, B.Position);
+            return radius < A.Position.DistanceSquared(B.Position);
         }
         public static bool PolygonPolygon(Polygon POLYGONA, Polygon POLYONB)
         {

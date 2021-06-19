@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 #endregion
 
 namespace Hasel
@@ -21,5 +22,12 @@ namespace Hasel
         public static SpriteBatch Batch;
         public static ContentManager Content;
         public static GraphicsDeviceManager Graphics;
+
+        public delegate void HAction();
+
+        public static void Boop()
+        {
+            Debug.WriteLine("Boop");
+        }
     }
 }

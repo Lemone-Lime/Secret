@@ -55,6 +55,8 @@ namespace Hasel
             set { Instance.nextScene = value; }
         }
 
+        public bool MouseHoveringUI = false;
+
         public Engine(int WIDTH, int HEIGHT, string TITLE, Color CLEARCOLOUR, bool FULLSCREEN)
         {
             Instance = this;
@@ -119,8 +121,6 @@ namespace Hasel
 
             Accumulator += DeltaTime;
 
-
-
             while (Accumulator > FixedDeltaTime)
             {
                 FixedUpdate(gameTime);
@@ -149,6 +149,8 @@ namespace Hasel
             }
 
             //add update shit here
+
+            MouseHoveringUI = false;
 
             base.Update(gameTime);
         }

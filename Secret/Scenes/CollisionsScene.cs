@@ -25,11 +25,44 @@ namespace Secret
     {
         PhysicsEntity player;
         Entity Platform;
+        HInterface Bar;
+        Dropdown Edit;
+        Button Exit, GameSettings;
+        Checkbox PlaceBox, PlaceCircle;
 
         int size = 30;
 
         public CollisionsScene() : base()
         {
+            Bar = new HInterface(new Vector2(192, 0), null, new HTexture(Engine.Width - 192, 24, new Color(20, 20, 20, 1)), null);
+
+            Edit = new Dropdown(Vector2.Zero, null, new HTexture(96, 24, new Color(10, 10, 10, 1)), new HText("Hack", "Edit", new Vector2(10, 5)));
+            Edit.HighlightTarget = 0.03f;
+            Edit.TextLeanTarget = new Vector2(7, 0);
+
+            Exit = new Button(new Vector2(96, 0), null, new HTexture(96, 24, new Color(10, 10, 10, 1)), new HText("Hack", "Exit", new Vector2(10, 5)), Engine.Instance.Exit);
+            Exit.HighlightTarget = 0.03f;
+            Exit.TextLeanTarget = new Vector2(7, 0);
+
+            PlaceBox = new Checkbox(Vector2.Zero, null, new HTexture(160, 24, new Color(10, 10, 10, 1)), new HText("Hack", "Place Box", new Vector2(10, 5)));
+            PlaceBox.HighlightTarget = 0.03f;
+            PlaceBox.TextLeanTarget = new Vector2(7, 0);
+            PlaceBox.Visible = false;
+            Edit.Add(PlaceBox);
+
+            PlaceCircle = new Checkbox(Vector2.Zero, null, new HTexture(160, 24, new Color(10, 10, 10, 1)), new HText("Hack", "Place Circle", new Vector2(10, 5)));
+            PlaceCircle.HighlightTarget = 0.03f;
+            PlaceCircle.TextLeanTarget = new Vector2(7, 0);
+            PlaceCircle.Visible = false;
+            Edit.Add(PlaceCircle);
+
+            GameSettings = new Button(Vector2.Zero, null, new HTexture(160, 24, new Color(10, 10, 10, 1)), new HText("Hack", "Game Settings", new Vector2(10, 5)));
+            GameSettings.HighlightTarget = 0.03f;
+            GameSettings.TextLeanTarget = new Vector2(7, 0);
+            GameSettings.Visible = false;
+            Edit.Add(GameSettings);
+
+
             player = new PhysicsEntity();
             player.Added(this);
             player.SetShape(new Box(Vector2.Zero, new Vector2(30, 30)));
@@ -53,11 +86,19 @@ namespace Secret
         {
             base.Update();
 
-            if (Scoop.Mouse.PressedLeft) PhysicsBox();
-            if (Scoop.Mouse.PressedRight) PhysicsCircle();
+            Edit.Update();
+            Exit.Update();
+
+            if (Scoop.Mouse.PressedLeft && !Engine.Instance.MouseHoveringUI)
+            {
+                if (PlaceCircle.Checked) PhysicsCircle();
+                if (PlaceBox.Checked) PhysicsBox();
+            }
+
             if (Scoop.Keyboard.Pressed(Keys.Z)) player.Get<Transform>().Position = Scoop.Mouse.Position;
 
             size = Math.Clamp(size + Math.Sign(Scoop.Mouse.WheelDelta), 10, 100);
+
         }
         public override void FixedUpdate()
         {
@@ -75,22 +116,28 @@ namespace Secret
             }
             Limn.HollowRectangle(Engine.Width - size, Engine.Height - size, size, size, Color.Yellow);
             Limn.Circle(new Vector2(Engine.Width - size / 2, Engine.Height - size / 2), size / 2, Color.Yellow, 5);
+
+            Bar.Render();
+            Edit.Render();
+            Exit.Render();
         }
+
         public void PhysicsCircle()
         {
             PhysicsEntity(new Circle(Vector2.Zero, 0.5f*size));
         }
+
         public void PhysicsBox()
         {
             PhysicsEntity(new Box(new Vector2(-size/2, -size/2), new Vector2(size, size)));
-
         }
+
         public void PhysicsEntity(Shape SHAPE)
         {
             PhysicsEntity physicsEntity = new PhysicsEntity();
             physicsEntity.Added(this);
             physicsEntity.Get<Transform>().Position = Scoop.Mouse.Position;
             physicsEntity.SetShape(SHAPE);
-        }   
+        }
     }
 }

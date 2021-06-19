@@ -20,7 +20,7 @@ namespace Hasel
     {
         public Transform Transform { get; private set; }
 
-        public PTexture Texture;
+        public HTexture Texture;
 
         public Color Color { get; set; }
 
@@ -31,10 +31,10 @@ namespace Hasel
 
         }
 #nullable enable
-        public Image(bool ACTIVE = true, bool VISIBLE = true, PTexture? TEXTURE = null, Color? COLOR = null) : base(ACTIVE)
+        public Image(bool ACTIVE = true, bool VISIBLE = true, HTexture? TEXTURE = null, Color? COLOR = null) : base(ACTIVE)
         {
 
-            Texture = TEXTURE ?? new PTexture();
+            Texture = TEXTURE ?? new HTexture();
 #nullable disable
             Visible = VISIBLE;
 
