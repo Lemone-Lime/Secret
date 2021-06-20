@@ -127,7 +127,7 @@ namespace Secret
 
             foreach (var shape in Forge.ComponentList<Collider>())
             {
-                Limn.Render(shape, Color.White);
+                Limn.Render(shape, Color.Lerp(Color.Transparent, Color.Lerp(Color.Blue, Color.Red, shape.Entity.Get<Material>().Restitution), 0.6f+shape.Entity.Get<Material>().Density));
             }
             Limn.HollowRectangle(Engine.Width - size, Engine.Height - size, size, size, Color.Yellow);
             Limn.Circle(new Vector2(Engine.Width - size / 2, Engine.Height - size / 2), size / 2, Color.Yellow, 5);
