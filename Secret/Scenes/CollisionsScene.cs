@@ -24,10 +24,10 @@ namespace Secret
     public class CollisionsScene : Scene
     {
         PhysicsEntity player;
-        Entity Platform;
+        StaticObject Platform;
         HInterface Bar;
         Dropdown Edit;
-        Button Exit;
+        Button Exit, Restart;
         Checkbox PlaceBox, PlaceCircle;
         Slider Density, Restitution;
 
@@ -41,7 +41,11 @@ namespace Secret
             Edit.HighlightTarget = 0.03f;
             Edit.TextLeanTarget = new Vector2(7, 0);
 
-            Exit = new Button(new Vector2(96, 0), null, new HTexture(96, 24, new Color(10, 10, 10, 1)), new HText("Hack", "Exit", new Vector2(10, 5)), Engine.Instance.Exit);
+            Restart = new Button(new Vector2(96, 0), null, new HTexture(96, 24, new Color(10, 10, 10, 1)), new HText("Hack", "Restart", new Vector2(10, 5)), RestartScene);
+            Restart.HighlightTarget = 0.03f;
+            Restart.TextLeanTarget = new Vector2(7, 0);
+
+            Exit = new Button(new Vector2(198, 0), null, new HTexture(96, 24, new Color(10, 10, 10, 1)), new HText("Hack", "Exit", new Vector2(10, 5)), Engine.Instance.Exit);
             Exit.HighlightTarget = 0.03f;
             Exit.TextLeanTarget = new Vector2(7, 0);
 
@@ -77,15 +81,14 @@ namespace Secret
 
             player = new PhysicsEntity();
             player.Added(this);
-            player.SetShape(new Box(Vector2.Zero, new Vector2(30, 30)));
-            Platform = new Entity();
+            player.SetShape(new Box(new Vector2(497, 516), new Vector2(30, 30)));
+            player.Get<Material>().Restitution = 0.5f;
+
+
+            Platform = new StaticObject();
             Platform.Added(this);
-            Platform.AddComponent<Transform>();
-            Platform.AddComponent<Collider>();
-            Platform.AddComponent<Material>();
-            Platform.Get<Material>().Restitution = 1;
-            Platform.Get<Collider>().MoldShape(new Box(new Vector2(0, 500), new Vector2(1024, 40)));
-            Platform.AddTag("Ground");
+            Platform.SetShape(new Box(new Vector2(100, 546), new Vector2(824, 30)));
+            Platform.Get<Material>().Restitution = 0.7f;
         }
         public override void Begin()
         {
@@ -100,6 +103,7 @@ namespace Secret
             base.Update();
 
             Edit.Update();
+            Restart.Update();
             Exit.Update();
 
             if (Scoop.Mouse.PressedLeft && !Engine.Instance.MouseHoveringUI)
@@ -111,9 +115,6 @@ namespace Secret
             if (Scoop.Keyboard.Pressed(Keys.Z)) player.Get<Transform>().Position = Scoop.Mouse.Position;
 
             size = Math.Clamp(size + Math.Sign(Scoop.Mouse.WheelDelta), 10, 100);
-
-            Debug.WriteLine(Density.Value);
-
         }
         public override void FixedUpdate()
         {
@@ -129,11 +130,13 @@ namespace Secret
             {
                 Limn.Render(shape, Color.Lerp(Color.Transparent, Color.Lerp(Color.Blue, Color.Red, shape.Entity.Get<Material>().Restitution), 0.6f+shape.Entity.Get<Material>().Density));
             }
+
             Limn.HollowRectangle(Engine.Width - size, Engine.Height - size, size, size, Color.Yellow);
             Limn.Circle(new Vector2(Engine.Width - size / 2, Engine.Height - size / 2), size / 2, Color.Yellow, 5);
 
             Bar.Render();
             Edit.Render();
+            Restart.Render();
             Exit.Render();
         }
 
@@ -156,6 +159,11 @@ namespace Secret
             physicsEntity.Get<Material>().Density = Calc.Lerp(0.01f, 0.4f, Density.Value);
 
             physicsEntity.SetShape(SHAPE);
+        }
+
+        public void RestartScene()
+        {
+            Engine.Scene = new CollisionsScene();
         }
     }
 }

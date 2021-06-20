@@ -27,8 +27,6 @@ namespace Hasel
         public Scene()
         {
             //Initialise Tags
-            Tag ground = new Tag("Ground");
-
             Forge = new Forge(this);
             Entities = Forge.Entities;
             Components = Forge.Components;

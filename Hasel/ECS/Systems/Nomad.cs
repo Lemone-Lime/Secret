@@ -52,8 +52,6 @@ namespace Hasel
             Contacts.Clear();
 
             List<Body> Bodies = Engine.Scene.Forge.ComponentList<Body>();
-            List<Dynamo> Dynamos = Engine.Scene.Forge.ComponentList<Dynamo>();
-
             List<Entity> Temp = Engine.Scene.Forge.GetEntitiesByMask(new Mask(new List<Type>() { typeof(Collider) }));
 
             //Generate new collision info

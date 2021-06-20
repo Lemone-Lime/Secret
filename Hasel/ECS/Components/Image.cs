@@ -33,7 +33,6 @@ namespace Hasel
 #nullable enable
         public Image(bool ACTIVE = true, bool VISIBLE = true, HTexture? TEXTURE = null, Color? COLOR = null) : base(ACTIVE)
         {
-
             Texture = TEXTURE ?? new HTexture();
 #nullable disable
             Visible = VISIBLE;

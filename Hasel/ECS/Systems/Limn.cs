@@ -80,7 +80,14 @@ namespace Hasel
             switch (COLLIDER.Shape.Type)
             {
                 case Shape.PType.Box:
-                    Box((Box)COLLIDER.Shape, COLOR);
+                    if (COLLIDER.Entity.Contains<Body>())
+                    {
+                        HollowBox((Box)COLLIDER.Shape, COLOR);
+                    }
+                    else
+                    {
+                        Box((Box)COLLIDER.Shape, COLOR);
+                    }
                     break;
                 case Shape.PType.Circle:
                     Circle((Circle)COLLIDER.Shape, COLOR);
@@ -227,9 +234,13 @@ namespace Hasel
         }
         #endregion
         #region Primitives
-        public static void Box(Box BOX, Color COLOR)
+        public static void HollowBox(Box BOX, Color COLOR)
         {
             HollowRectangle(BOX.Position, BOX.Dimensions, COLOR);
+        }
+        public static void Box(Box BOX, Color COLOR)
+        {
+            Rectangle(BOX.Position, BOX.Dimensions, COLOR);
         }
         public static void Circle(Circle CIRCLE, Color COLOR)
         {
