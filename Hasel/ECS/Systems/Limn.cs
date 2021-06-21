@@ -196,7 +196,7 @@ namespace Hasel
             Rect.X = (int)X;
             Rect.Y = (int)Y;
             Rect.Width = (int)WIDTH;
-            Rect.Height = 1;
+            Rect.Height = 2;
 
             Globals.Batch.Draw(Pixel.Texture, Rect, Pixel.Source, COLOR);
 
@@ -205,7 +205,7 @@ namespace Hasel
             Globals.Batch.Draw(Pixel.Texture, Rect, Pixel.Source, COLOR);
 
             Rect.Y -= (int)HEIGHT - 1;
-            Rect.Width = 1;
+            Rect.Width = 2;
             Rect.Height = (int)HEIGHT;
 
             Globals.Batch.Draw(Pixel.Texture, Rect, Pixel.Source, COLOR);
@@ -244,7 +244,7 @@ namespace Hasel
         }
         public static void Circle(Circle CIRCLE, Color COLOR)
         {
-            Circle(CIRCLE.Position, CIRCLE.Radius, COLOR, Math.Max((int)CIRCLE.Radius/10, 5));
+            Circle(CIRCLE.Position, CIRCLE.Radius, 2, COLOR, Math.Max((int)CIRCLE.Radius/10, 5));
         }
         public static void Polygon(Polygon POLYGON, Color COLOR)
         {
