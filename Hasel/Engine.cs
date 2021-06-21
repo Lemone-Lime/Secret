@@ -49,6 +49,15 @@ namespace Hasel
         private Scene scene;
         private Scene nextScene;
 
+        //Menu
+        private Menu menu;
+
+        public static Menu Menu
+        {
+            get { return Instance.menu; }
+            set { Instance.menu = value; }
+        }
+
         public static Scene Scene
         {
             get { return Instance.scene; }
@@ -152,6 +161,8 @@ namespace Hasel
 
             MouseHoveringUI = false;
 
+            Menu.Update();
+
             base.Update(gameTime);
         }
 
@@ -172,6 +183,7 @@ namespace Hasel
             {
                 Limn.Begin();
                 Scene.Render();
+                Menu.Render();
                 Limn.End();
             }
 

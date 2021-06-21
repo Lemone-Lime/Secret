@@ -22,7 +22,7 @@ namespace Hasel
         public bool Open;
         public Vector2 InitialDropOffset;
 
-        public Dropdown(Vector2? POSITION = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? INITIALDROPOFFSET = null) : base(POSITION, DIMENSIONS, TEXTURE, TEXT, null)
+        public Dropdown(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? INITIALDROPOFFSET = null) : base(OFFSET, DIMENSIONS, TEXTURE, TEXT, null)
         {
             Items = new List<HInterface>();
             InitialDropOffset = INITIALDROPOFFSET ?? new Vector2(0, Dimensions.Y);
@@ -30,7 +30,11 @@ namespace Hasel
 
         public override void Update()
         {
-            foreach (var item in Items) item.Update();
+            foreach (var item in Items)
+            {
+                item.InheritedOffset = Position;
+                item.Update();
+            }
 
             base.Update();
 
@@ -40,7 +44,7 @@ namespace Hasel
                 foreach (var item in Items)
                 {
                     item.DropOffset.X = InitialDropOffset.X;
-                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, DropOffsetTarget.Y, DropOffsetTarget.Y / 100);
+                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, DropOffsetTarget.Y, DropOffsetTarget.Y / 200);
 
                     item.Visible = true;
 
@@ -52,7 +56,7 @@ namespace Hasel
                 foreach (var item in Items)
                 {
                     item.DropOffset.X = InitialDropOffset.X;
-                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, 0, DropOffsetTarget.Y / 100);
+                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, 0, DropOffsetTarget.Y / 200);
                     if (item.DropOffset.Y == 0) item.Visible = false;
 
                     DropOffsetTarget.Y += item.Dimensions.Y;
@@ -61,19 +65,19 @@ namespace Hasel
         }
         public override void Render()
         {
-            foreach (var item in Items) item.Render();
-
             base.Render();
+
+            if (Visible) foreach (var item in Items) item.Render();
         }
         public override void Activate()
         {
             Open = !Open;
         }
-        public void Add(HInterface ITEM)
+        public virtual void Add(HInterface ITEM)
         {
             Items.Add(ITEM);
         }
-        public void Remove(HInterface ITEM)
+        public virtual void Remove(HInterface ITEM)
         {
             Items.Remove(ITEM);
         }

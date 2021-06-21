@@ -26,6 +26,7 @@ namespace Secret
             base.LoadContent();
 
             Scene = new CollisionsScene();
+            Menu = new EditorMenu();
         }
 
         protected override void Update(GameTime gameTime)

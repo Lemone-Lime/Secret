@@ -20,7 +20,7 @@ namespace Hasel
     {
         public bool Checked = false;
 
-        public Checkbox(Vector2? POSITION = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null) : base(POSITION, DIMENSIONS, TEXTURE, TEXT, null)
+        public Checkbox(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null) : base(OFFSET, DIMENSIONS, TEXTURE, TEXT, null)
         {
             
         }
@@ -32,7 +32,7 @@ namespace Hasel
         {
             base.Render();
 
-            if(Checked && Visible) Limn.Text("x", Position + DropOffset + new Vector2(Dimensions.X * 0.9f, Dimensions.Y * 0.5f - 8), Color.White, 0.12f);
+            if(Checked && Visible) Limn.Text("x", Position + new Vector2(Dimensions.X * 0.9f, Dimensions.Y * 0.5f - 8), Color.White, 0.12f);
         }
         public override void Activate()
         {

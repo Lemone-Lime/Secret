@@ -20,14 +20,17 @@ namespace Hasel
     {
         public bool Pressed;
         public Globals.HAction Action;
+        public bool Activated;
 
-        public Button(Vector2? POSITION = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Globals.HAction ACTION = null) : base(POSITION, DIMENSIONS, TEXTURE, TEXT)
+        public Button(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Globals.HAction ACTION = null) : base(OFFSET, DIMENSIONS, TEXTURE, TEXT)
         {
             Action = ACTION ?? Globals.Boop;
         }
         public override void Update()
         {
             base.Update();
+
+            Activated = false;
 
             if (MouseInside)
             {
@@ -38,6 +41,7 @@ namespace Hasel
                 else if (Scoop.Mouse.ReleasedLeftButton && Pressed)
                 {
                     Pressed = false;
+                    Activated = true;
                     Activate();
                 }
             }

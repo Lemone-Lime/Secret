@@ -33,7 +33,7 @@ namespace Hasel
 
         public bool Pressed = false;
 
-        public Slider(Vector2? POSITION = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? LINEOFFSET = null, float LINELENGTH = 10, float LINETHICKNESS = 1) : base(POSITION, DIMENSIONS, TEXTURE, TEXT)
+        public Slider(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? LINEOFFSET = null, float LINELENGTH = 10, float LINETHICKNESS = 1) : base(OFFSET, DIMENSIONS, TEXTURE, TEXT)
         {
             LineOffset = LINEOFFSET ?? Vector2.Zero;
             LineLength = LINELENGTH;
@@ -47,7 +47,7 @@ namespace Hasel
         {
             base.Update();
 
-            if (Atlas.PointCircle(Scoop.Mouse.Position, new Circle(Position + LineOffset + CircleOffset + DropOffset, CircleRadius + CircleThickness * 0.5f)))
+            if (Atlas.PointCircle(Scoop.Mouse.Position, new Circle(Position + LineOffset + CircleOffset, CircleRadius + CircleThickness * 0.5f)))
             {
                 if (Scoop.Mouse.PressedLeft)
                 {
@@ -56,7 +56,7 @@ namespace Hasel
             }
             if (Pressed && Scoop.Mouse.CheckLeft)
             {
-                CircleOffset = new Vector2(Math.Clamp(Scoop.Mouse.X - LineOffset.X - Position.X - DropOffset.X, 0, LineLength), 0);
+                CircleOffset = new Vector2(Math.Clamp(Scoop.Mouse.X - LineOffset.X - Position.X, 0, LineLength), 0);
                 Value = CircleOffset.X / LineLength;
             }
             if (Scoop.Mouse.ReleasedLeftButton) Pressed = false;
@@ -67,8 +67,8 @@ namespace Hasel
 
             if (Visible)
             {
-                Limn.LineAngle(Position + LineOffset + DropOffset, 0.0f, LineLength, LineThickness, LineColor);
-                Limn.Circle(Position + LineOffset + CircleOffset + DropOffset, CircleRadius, CircleThickness, CircleColor, CircleResolution);
+                Limn.LineAngle(Position + LineOffset, 0.0f, LineLength, LineThickness, LineColor);
+                Limn.Circle(Position + LineOffset + CircleOffset, CircleRadius, CircleThickness, CircleColor, CircleResolution);
             }
         }
     }

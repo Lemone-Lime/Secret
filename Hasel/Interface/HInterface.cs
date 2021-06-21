@@ -19,28 +19,35 @@ namespace Hasel
 {
     public class HInterface
     {
+        //Essential values
         public Vector2 Position, Dimensions;
         public HTexture Texture;
 
+        public Vector2 Offset = Vector2.Zero;
+        public Vector2 DropOffset = Vector2.Zero;
+        public Vector2 InheritedOffset = Vector2.Zero;
+
+
+        //Highlight
         public float Highlight = 0.0f;
         public float HighlightTarget = 0.0f;
 
+        //Text and Textlean
         public HText Text;
         public Vector2 TextLean;
         public Vector2 TextLeanTarget;
 
-        public bool MouseInside = false;
-
-        public Vector2 DropOffset = Vector2.Zero;
-
-        public bool Visible = true;
-
+        //Arrow Properties
         public float ArrowScale = 0.0f;
         public float ArrowAlpha = 0.0f;
 
-        public HInterface(Vector2? POSITION = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null)
+        public bool MouseInside = false;
+        public bool Visible = true;
+
+
+        public HInterface(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null)
         {
-            Position = POSITION ?? Vector2.Zero;
+            Offset = OFFSET ?? Vector2.Zero;
             Texture = TEXTURE ?? new HTexture();
             Dimensions = DIMENSIONS ?? new Vector2(Texture.Texture.Width, Texture.Texture.Height);
 
@@ -48,6 +55,8 @@ namespace Hasel
         }
         public virtual void Update()
         {
+            Position = Offset + DropOffset + InheritedOffset;
+
             if (InDimensions() && Visible)
             {
                 Engine.Instance.MouseHoveringUI = true;
@@ -76,19 +85,19 @@ namespace Hasel
         {
             if (Visible)
             {
-                Limn.Render(Texture, Position + DropOffset, Color.White, 0.0f, Vector2.One);
-                Limn.Rectangle(Position + DropOffset, Dimensions, Color.Lerp(Color.Transparent, Color.White, Highlight));
+                Limn.Render(Texture, Position, Color.White, 0.0f, Vector2.One);
+                Limn.Rectangle(Position, Dimensions, Color.Lerp(Color.Transparent, Color.White, Highlight));
 
-                Limn.RenderCentered(Limn.Arrow, Position + DropOffset + new Vector2(8, Dimensions.Y*0.5f), Color.Lerp(Color.Transparent, Color.White, ArrowAlpha), 0.0f, new Vector2(ArrowScale, ArrowScale));
+                Limn.RenderCentered(Limn.Arrow, Position + new Vector2(8, Dimensions.Y*0.5f), Color.Lerp(Color.Transparent, Color.White, ArrowAlpha), 0.0f, new Vector2(ArrowScale, ArrowScale));
 
-                Limn.Render(Text, Vector2.Round(Position + TextLean + DropOffset));
+                Limn.Render(Text, Vector2.Round(Position + TextLean));
             }
         }
 
         public bool InDimensions() 
         {
-            if (Scoop.Mouse.Position.X < Position.X + DropOffset.X || Scoop.Mouse.Position.X > Position.X + DropOffset.X + Dimensions.X) return false;
-            if (Scoop.Mouse.Position.Y < Position.Y + DropOffset.Y || Scoop.Mouse.Position.Y > Position.Y + DropOffset.Y + Dimensions.Y) return false;
+            if (Scoop.Mouse.Position.X < Position.X || Scoop.Mouse.Position.X > Position.X + Dimensions.X) return false;
+            if (Scoop.Mouse.Position.Y < Position.Y || Scoop.Mouse.Position.Y > Position.Y + Dimensions.Y) return false;
             return true;
         }
     }
