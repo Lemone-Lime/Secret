@@ -20,12 +20,13 @@ namespace Hasel
     {
         public List<HInterface> Items;
         public bool Open;
-        public Vector2 InitialDropOffset;
+        public Vector2 InitialDropOffset, DropDirection;
 
-        public Dropdown(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? INITIALDROPOFFSET = null) : base(OFFSET, DIMENSIONS, TEXTURE, TEXT, null)
+        public Dropdown(Vector2? OFFSET = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? INITIALDROPOFFSET = null, Vector2? DROPDIRECTION = null) : base(OFFSET, TEXTURE, TEXT, null)
         {
             Items = new List<HInterface>();
             InitialDropOffset = INITIALDROPOFFSET ?? new Vector2(0, Dimensions.Y);
+            DropDirection = DROPDIRECTION ?? new Vector2(0, 1);
         }
 
         public override void Update()
@@ -43,23 +44,22 @@ namespace Hasel
             {
                 foreach (var item in Items)
                 {
-                    item.DropOffset.X = InitialDropOffset.X;
-                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, DropOffsetTarget.Y, DropOffsetTarget.Y / 200);
+                    item.DropOffset = Calc.Approach(item.DropOffset, DropOffsetTarget, Calc.Abs(DropOffsetTarget / 200));
 
                     item.Visible = true;
 
-                    DropOffsetTarget.Y += item.Dimensions.Y;
+                    DropOffsetTarget += item.Dimensions * DropDirection;
                 }
             }
             else
             {
                 foreach (var item in Items)
                 {
-                    item.DropOffset.X = InitialDropOffset.X;
-                    item.DropOffset.Y = Calc.Approach(item.DropOffset.Y, 0, DropOffsetTarget.Y / 200);
-                    if (item.DropOffset.Y == 0) item.Visible = false;
+                    item.DropOffset = Calc.Approach(item.DropOffset, Vector2.Zero, Calc.Abs(DropOffsetTarget / 200));
 
-                    DropOffsetTarget.Y += item.Dimensions.Y;
+                    if (item.DropOffset == Vector2.Zero) item.Visible = false;
+
+                    DropOffsetTarget += item.Dimensions * DropDirection;
                 }
             }
         }
@@ -67,7 +67,15 @@ namespace Hasel
         {
             base.Render();
 
-            if (Visible) foreach (var item in Items) item.Render();
+            if (Visible)
+            {
+                foreach (var item in Items) item.Render();
+
+                if (Open)
+                    Limn.RenderCentered(Limn.Arrow, Position + new Vector2(Dimensions.X - 10, Dimensions.Y * 0.5f), Color.White, (float)Math.PI*1.5f, new Vector2(1f, 1f));
+                else
+                    Limn.RenderCentered(Limn.Arrow, Position + new Vector2(Dimensions.X - 10, Dimensions.Y * 0.5f), Color.White, (float)Math.PI*0.5f, new Vector2(1f, 1f));
+            }
         }
         public override void Activate()
         {

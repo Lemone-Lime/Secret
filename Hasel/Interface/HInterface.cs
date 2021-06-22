@@ -41,15 +41,20 @@ namespace Hasel
         public float ArrowScale = 0.0f;
         public float ArrowAlpha = 0.0f;
 
+        public bool ShowArrow = true;
         public bool MouseInside = false;
         public bool Visible = true;
 
 
-        public HInterface(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null)
+        public HInterface(Vector2? OFFSET = null, HTexture TEXTURE = null, HText TEXT = null)
         {
             Offset = OFFSET ?? Vector2.Zero;
-            Texture = TEXTURE ?? new HTexture();
-            Dimensions = DIMENSIONS ?? new Vector2(Texture.Texture.Width, Texture.Texture.Height);
+            Texture = TEXTURE;
+
+            if (Texture == null)
+                Dimensions = TEXT.Dimensions;
+            else
+                Dimensions = Texture.Dimensions;
 
             Text = TEXT ?? new HText();
         }
@@ -85,12 +90,19 @@ namespace Hasel
         {
             if (Visible)
             {
-                Limn.Render(Texture, Position, Color.White, 0.0f, Vector2.One);
-                Limn.Rectangle(Position, Dimensions, Color.Lerp(Color.Transparent, Color.White, Highlight));
-
-                Limn.RenderCentered(Limn.Arrow, Position + new Vector2(8, Dimensions.Y*0.5f), Color.Lerp(Color.Transparent, Color.White, ArrowAlpha), 0.0f, new Vector2(ArrowScale, ArrowScale));
+                if (Texture != null)
+                {
+                    Limn.Render(Texture, Position, Color.White, 0.0f, Vector2.One);
+                    Limn.Rectangle(Position, Dimensions, Color.Lerp(Color.Transparent, Color.White, Highlight));
+                }
 
                 Limn.Render(Text, Vector2.Round(Position + TextLean));
+
+                if (ShowArrow)
+                {
+                    Limn.RenderCentered(Limn.Arrow, Position + new Vector2(8, Dimensions.Y * 0.5f), Color.Lerp(Color.Transparent, Color.White, ArrowAlpha), 0.0f, new Vector2(ArrowScale, ArrowScale));
+                }
+
             }
         }
 

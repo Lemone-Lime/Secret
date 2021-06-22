@@ -33,7 +33,7 @@ namespace Hasel
 
         public bool Pressed = false;
 
-        public Slider(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? LINEOFFSET = null, float LINELENGTH = 10, float LINETHICKNESS = 1) : base(OFFSET, DIMENSIONS, TEXTURE, TEXT)
+        public Slider(Vector2? OFFSET = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? LINEOFFSET = null, float LINELENGTH = 10, float LINETHICKNESS = 1) : base(OFFSET, TEXTURE, TEXT)
         {
             LineOffset = LINEOFFSET ?? Vector2.Zero;
             LineLength = LINELENGTH;

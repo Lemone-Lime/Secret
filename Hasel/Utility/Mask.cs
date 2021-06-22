@@ -8,48 +8,6 @@ namespace Hasel
 {
     public class Mask
     {
-        /* Old Method
-        public BitArray Bits;
-        public const int BitCount = 32;
-
-        public bool this[int index]
-        {
-            get { if (index < 0 || index > BitCount) throw new IndexOutOfRangeException(); return Bits[index]; }
-            set { if (index < 0 || index > BitCount) throw new IndexOutOfRangeException(); Bits[index] = value; }
-        }
-
-        public Mask()
-        {
-            Bits = new BitArray(BitCount, false);
-            
-        }
-        public void Log()
-        {
-            string temp = "";
-            foreach (var bit in Bits)
-            {
-                temp = temp+Convert.ToInt32(bit);
-            }
-            Debug.WriteLine(temp);
-        }
-        public bool Check(Mask MASK) {
-            for(var i=0; i<BitCount; i++)
-            {
-                if (this[i] & MASK[i]) continue;
-                return false;
-            }
-            return true;
-        }
-        public static implicit operator int(Mask MASK)
-        {
-            int value = 0;
-            for (int i = 0; i < BitCount; i++)
-            {
-                value += Convert.ToInt32(MASK.Bits[i]) << i;
-            }
-            return value;
-        }
-        */
         protected int value = 0;
         public virtual int Value { get; set; }
 

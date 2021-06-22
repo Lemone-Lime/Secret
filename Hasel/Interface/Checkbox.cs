@@ -20,7 +20,7 @@ namespace Hasel
     {
         public bool Checked = false;
 
-        public Checkbox(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null) : base(OFFSET, DIMENSIONS, TEXTURE, TEXT, null)
+        public Checkbox(Vector2? OFFSET = null, HTexture TEXTURE = null, HText TEXT = null) : base(OFFSET, TEXTURE, TEXT, null)
         {
             
         }

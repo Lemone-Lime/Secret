@@ -30,7 +30,7 @@ namespace Hasel
         public static void Initialise()
         {
             BlendState = BlendState.AlphaBlend;
-            SamplerState = SamplerState.PointClamp;
+            SamplerState = SamplerState.LinearClamp;
             Hack = Globals.Content.Load<SpriteFont>("Hack");
             Arrow = new HTexture("Arrow", null);
 
@@ -100,7 +100,25 @@ namespace Hasel
         public static void Render(HText TEXT, Vector2 POSITION)
         {
             if (TEXT.Text != "")
-                Globals.Batch.DrawString(TEXT.Font, TEXT.Text, POSITION + TEXT.Offset, TEXT.Color, 0.0f, Vector2.Zero, TEXT.Scale, new SpriteEffects(), 0.0f);
+            {
+                Vector2 dims = TEXT.Font.MeasureString(TEXT.Text) * TEXT.Scale; //0.8 is buffer
+
+                int lines = (int)Math.Floor(dims.X / TEXT.MaxWidth / 0.9f);
+
+                if (lines > 0)
+                {
+                    int charactersInLine = (int)Math.Floor((double)TEXT.Text.Length / lines);
+
+                    for (int i = 0; i <= lines; i++)
+                    {
+                        Globals.Batch.DrawString(TEXT.Font, TEXT.Text.Substring(i * charactersInLine, Math.Min(charactersInLine, TEXT.Text.Length - charactersInLine*i)), POSITION + TEXT.Offset + new Vector2(0, i*dims.Y + 2), TEXT.Color, 0.0f, Vector2.Zero, TEXT.Scale, new SpriteEffects(), 0.0f);
+                    }
+                }
+                else
+                {
+                    Globals.Batch.DrawString(TEXT.Font, TEXT.Text, POSITION + TEXT.Offset, TEXT.Color, 0.0f, Vector2.Zero, TEXT.Scale, new SpriteEffects(), 0.0f);
+                }
+            }
         }
         #endregion
         #region Point
@@ -230,7 +248,7 @@ namespace Hasel
             {
                 Line(POINTS[i-1], POINTS[i], COLOR);
             }
-            Line(POINTS[POINTS.Count - 1], POINTS[0], COLOR);
+            Line(POINTS[^1], POINTS[0], COLOR);
         }
         #endregion
         #region Primitives
@@ -259,6 +277,31 @@ namespace Hasel
         public static void TextCentered(string TEXT, Vector2 POSITION, Color COLOR, float SCALE)
         {
             Globals.Batch.DrawString(Hack, TEXT, POSITION-Hack.MeasureString(TEXT)*0.5f, COLOR, 0.0f, Vector2.Zero, SCALE, new SpriteEffects(), 0.0f);
+        }
+        public static void TextBlock(string TEXT, Vector2 POSITION, Color COLOR, float SCALE, float MAXWIDTH)
+        {
+            /*Vector2 dims = Hack.MeasureString(TEXT) * SCALE;
+            int newLines = (int)Math.Ceiling(dims.X / MAXWIDTH);
+
+            if (newLines > 0)
+            {
+                int charactersInLine = (int)Math.Ceiling((double)TEXT.Length / newLines);
+
+                for (int i = 0; i < newLines; i++)
+                {
+                    string segment = TEXT.Substring(i * charactersInLine, charactersInLine);
+                    Text(segment, POSITION, COLOR, SCALE);
+                }
+            }
+            else
+            {
+                Text(TEXT, POSITION, COLOR, SCALE);
+            }*/
+            string[] lines;
+            lines = TEXT.Split("/n", StringSplitOptions.None);
+            foreach (var line in lines) {
+                Text(line, POSITION + new Vector2(0, Hack.MeasureString(TEXT).X * SCALE), COLOR, SCALE);
+            }
         }
         #endregion
     }

@@ -20,7 +20,7 @@ namespace Hasel
     {
         #region Variables
         public Texture2D Texture { get; set; }
-
+        public Vector2 Dimensions { get { return new Vector2(Texture.Width, Texture.Height); } }
         public Rectangle Source { get; private set; }
 
         #endregion  

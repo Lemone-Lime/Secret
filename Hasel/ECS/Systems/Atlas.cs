@@ -113,20 +113,11 @@ namespace Hasel
             //No separating axis, therefore this is atleast one overlapping axis
             return true;
         }
-        public static bool BoxCircle(Box BOX, Circle CIRCLE)
-        {
-            return false;
-        }
         public static bool CircleCircle(Circle A, Circle B)
         {
             float radius = A.Radius + B.Radius;
             radius *= radius;
             return radius < A.Position.DistanceSquared(B.Position);
-        }
-        public static bool PolygonPolygon(Polygon POLYGONA, Polygon POLYONB)
-        {
-            //SAT
-            return false;
         }
         #endregion
         #region Generate Manifolds
@@ -356,11 +347,11 @@ namespace Hasel
             incidentFace = incidentFace + 1 >= (int)INCPOLY.VertexCount ? 0 : incidentFace + 1;
             INCIDENTFACE[1] = INCPOLY.Vertices[incidentFace];
         }
-        public static void Clip(Vector2 NORMAL, float C, Vector2 FACE)
+        /*public static void Clip(Vector2 NORMAL, float C, Vector2 FACE)
         {
             int sp = 0;
 
-        }
+        }*/
         #endregion
         /* Old Method
         #region Methods

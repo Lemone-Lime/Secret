@@ -16,14 +16,14 @@ namespace Hasel
         internal Dictionary<int, List<Component>> Components;
 
         private bool AreAnyUnsorted = false;
-        private bool[] Unsorted;
+        private readonly bool[] Unsorted;
 
 
         internal List<Entity>[] TagLists;
-        private Dictionary<int, double> TrueDepths;
+        private readonly Dictionary<int, double> TrueDepths;
 
         internal List<Entity> Entities;
-        private List<int> FreeIds;
+        private readonly List<int> FreeIds;
         private int previousId = 0;
 
         public Scene Scene { get; private set; }

@@ -26,9 +26,9 @@ namespace Hasel
 
         public Vector2 Dimensions;
 
-        public float Scale;
+        public float Scale, MaxWidth;
 
-        public HText(string FONTPATH = "Hack", string TEXT = "", Vector2? OFFSET = null, Color? COLOR = null, float SCALE = 0.12f)
+        public HText(string FONTPATH = "Hack", string TEXT = "", Vector2? OFFSET = null, Color? COLOR = null, float SCALE = 0.12f, float MAXWIDTH = 100)
         {
             Font = Globals.Content.Load<SpriteFont>(FONTPATH);
             Text = TEXT;
@@ -36,6 +36,7 @@ namespace Hasel
             Color = COLOR ?? Color.White;
             Scale = SCALE;
             Dimensions = Font.MeasureString(TEXT) * Scale;
+            MaxWidth = MAXWIDTH;
         }
     }
 }

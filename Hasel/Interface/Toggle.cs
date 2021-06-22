@@ -22,7 +22,7 @@ namespace Hasel
         public List<Button> Buttons;
         
 
-        public Toggle(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? INITIALDROPOFFSET = null) : base(OFFSET, DIMENSIONS, TEXTURE, TEXT, INITIALDROPOFFSET)
+        public Toggle(Vector2? OFFSET = null, HTexture TEXTURE = null, HText TEXT = null, Vector2? INITIALDROPOFFSET = null, Vector2? DROPDIRECTION = null) : base(OFFSET, TEXTURE, TEXT, INITIALDROPOFFSET, DROPDIRECTION)
         {
             Buttons = new List<Button>();
         }

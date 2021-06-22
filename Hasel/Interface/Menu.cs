@@ -20,9 +20,9 @@ namespace Hasel
     {
         public List<HInterface> Items;
 
-        public Menu(Vector2? OFFSET = null, Vector2? DIMENSIONS = null, HTexture TEXTURE = null, HText TEXT = null) : base(OFFSET, DIMENSIONS, TEXTURE, TEXT)
+        public Menu(Vector2? OFFSET = null, HTexture TEXTURE = null, HText TEXT = null) : base(OFFSET, TEXTURE, TEXT)
         {
-            
+            Items = new List<HInterface>();
         }
         public override void Update()
         {

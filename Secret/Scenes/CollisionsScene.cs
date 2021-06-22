@@ -30,8 +30,9 @@ namespace Secret
         {
             player = new PhysicsEntity();
             player.Added(this);
-            player.SetShape(new Box(Vector2.Zero, new Vector2(30, 30)));
+            player.SetShape(new Box(Vector2.Zero, new Vector2(35, 60)));
             player.Get<Transform>().Position = new Vector2(497, 516);
+            player.Get<Material>().Density = 0.1f;
             player.Get<Material>().Restitution = 0.5f;      
 
             Platform = new StaticObject();

@@ -14,6 +14,10 @@ namespace Hasel
         public const float BiasRelative = 0.95f;
         public const float BiasAbsolute = 0.01f;
 
+        public static Vector2 Abs(Vector2 VALUE)
+        {
+            return new Vector2(Math.Abs(VALUE.X), Math.Abs(VALUE.Y));
+        }
         public static float Angle(Vector2 FROM, Vector2 TO)
         {
             return (float)Math.Atan2(TO.Y - FROM.Y, TO.X - FROM.X);
@@ -85,7 +89,7 @@ namespace Hasel
             var rand = new Random();
             return (float)rand.NextDouble() * (MAX - MIN) + MIN;
         }
-        public static bool gt(float A, float B)
+        public static bool GT(float A, float B)
         {
             return A >= B * BiasRelative + A * BiasAbsolute;
         }

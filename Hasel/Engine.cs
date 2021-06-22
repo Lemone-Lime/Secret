@@ -37,10 +37,14 @@ namespace Hasel
 
 
         //fixed time step
+        public static float RawDeltaTime;
         public static float DeltaTime;
+        public static float TimeRate = 1f;
         private float Accumulator = 0f;
-        public const float FPSAim = 60;
-        public const float FixedDeltaTime = 1/FPSAim;
+        public static float FPSAim = 60;
+        public static float FixedDeltaTime {
+            get { return 1 / FPSAim; }
+        }
         public static float Time = 0f;
 
         public static float Alpha;
@@ -117,14 +121,15 @@ namespace Hasel
             Forge.Initialise();
         }
 
-        protected override void Update(GameTime gameTime)
+        protected override void Update(GameTime GAMETIME)
         {
             Scoop.Update();
 
             if (Scoop.Keyboard.Check(Keys.Escape))
                 Exit();
 
-            DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            RawDeltaTime = (float)GAMETIME.ElapsedGameTime.TotalSeconds;
+            DeltaTime = RawDeltaTime * TimeRate;
             if (DeltaTime > FixedDeltaTime)
                 DeltaTime = FixedDeltaTime;
 
@@ -132,7 +137,7 @@ namespace Hasel
 
             while (Accumulator > FixedDeltaTime)
             {
-                FixedUpdate(gameTime);
+                FixedUpdate(GAMETIME);
                 Time += FixedDeltaTime;
                 Accumulator -= FixedDeltaTime;
             }
@@ -147,7 +152,7 @@ namespace Hasel
 
             if (scene != nextScene)
             {
-                var lastScene = scene;
+                //var lastScene = scene;
                 if (scene != null)
                     scene.End();
                 scene = nextScene;
@@ -163,18 +168,18 @@ namespace Hasel
 
             Menu.Update();
 
-            base.Update(gameTime);
+            base.Update(GAMETIME);
         }
 
-        protected virtual void FixedUpdate(GameTime gameTime)
+        protected virtual void FixedUpdate(GameTime GAMETIME)
         {
             Nomad.EnactPhysics();
             Scene.FixedUpdate();
         }
 
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime GAMETIME)
         {
-            base.Draw(gameTime);
+            base.Draw(GAMETIME);
             
             //Render Core
             GraphicsDevice.Clear(ClearColour);
@@ -190,7 +195,7 @@ namespace Hasel
 
             //Frame Counter
             fpsCounter++;
-            counterElapsed += gameTime.ElapsedGameTime;
+            counterElapsed += GAMETIME.ElapsedGameTime;
 
             if (counterElapsed >= TimeSpan.FromSeconds(1))
             {

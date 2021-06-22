@@ -29,8 +29,11 @@ namespace Hasel
 
         internal static void Update()
         {
-            Keyboard.Update();
-            Mouse.Update();
+            if (Engine.Instance.IsActive)
+            {
+                Keyboard.Update();
+                Mouse.Update();
+            }
         }
 
         public class KeyboardInput
@@ -216,6 +219,13 @@ namespace Hasel
                 set
                 {
                     Microsoft.Xna.Framework.Input.Mouse.SetPosition((int)Math.Round(value.X), (int)Math.Round(value.Y));
+                }
+            }
+            public Vector2 PositionDelta
+            {
+                get
+                {
+                    return new Vector2(CurrentState.X - PreviousState.X, CurrentState.Y - PreviousState.Y);
                 }
             }
             #endregion
